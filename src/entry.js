@@ -423,8 +423,7 @@ import { TubePainter } from './lib/Painter';
 import { VRButton } from 'three/examples/jsm/webxr/VRButton.js';
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import ImmersiveControls from '@depasquale/three-immersive-controls';
-import sfl2 from './interior.glb'
-import soldier from './Soldier.glb'
+
 import { Color } from 'three';
 import { io } from "socket.io-client"
 let camera, scene, renderer;
