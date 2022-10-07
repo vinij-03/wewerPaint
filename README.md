@@ -1,8 +1,8 @@
-#wewer first prototype work
+# wewer first prototype work
 <br>
 <br>
-###controls work
-###multiplayer works
+### controls work
+### multiplayer works
 
 ## TO-Do
 <br>
