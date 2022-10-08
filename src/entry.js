@@ -424,6 +424,7 @@ import { TubePainter } from './lib/Painter';
 import { VRButton } from 'three/examples/jsm/webxr/VRButton.js';
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import ImmersiveControls from '@depasquale/three-immersive-controls';
+import  inte  from './int.glb';
 
 import { Color } from 'three';
 import { io } from "socket.io-client"
@@ -497,42 +498,43 @@ function init() {
 	const pointLight1 = new THREE.PointLight(0x79DAE8, 1, 100);
 	pointLight1.position.set( 0, 10, 0 );
 	pointLight1.castShadow = true; // default false
-	this.scene.add( pointLight1 )
+	scene.add( pointLight1 )
 	const sphereSize1 = 1;
-	const pointLightHelper1 = new THREE.PointLightHelper( pointLight1, sphereSize1 );
+	// const pointLightHelper1 = new THREE.PointLightHelper( pointLight1, sphereSize1 );
    //  this.scene.add( pointLightHelper1 );
 	 
 	const pointLight2 = new THREE.PointLight(0x79DAE8, 1, 100);
 	pointLight2.position.set( 35, 10, 5 );
 	pointLight2.castShadow = true; // default false
-	this.scene.add( pointLight2 )
+	scene.add( pointLight2 )
 	const sphereSize2 = 1;
-	const pointLightHelper2 = new THREE.PointLightHelper( pointLight2, sphereSize2 );
+	// const pointLightHelper2 = new THREE.PointLightHelper( pointLight2, sphereSize2 );
    //  this.scene.add( pointLightHelper2 );
  
 	const pointLight3 = new THREE.PointLight(0xFFF6BF, 1, 100);
 	pointLight3.position.set( -35, 10, 0 );
 	pointLight3.castShadow = true; // default false
-	this.scene.add( pointLight3 )
+	scene.add( pointLight3 )
 	const sphereSize3 = 1;
-	const pointLightHelper3 = new THREE.PointLightHelper( pointLight3, sphereSize3 );
+	// const pointLightHelper3 = new THREE.PointLightHelper( pointLight3, sphereSize3 );
    //  this.scene.add( pointLightHelper3 );
  
 	const pointLight4 = new THREE.PointLight(0xFFF6BF, 1, 100);
 	pointLight4.position.set( 9, 10, -8 );
 	pointLight4.castShadow = true; // default false
-	this.scene.add( pointLight4 )
+	scene.add( pointLight4 )
 	const sphereSize4 = 1;
-	const pointLightHelper4 = new THREE.PointLightHelper( pointLight4, sphereSize4 );
+	// const pointLightHelper4 = new THREE.PointLightHelper( pointLight4, sphereSize4 );
 
 	dracoLoader = new DRACOLoader();
 	dracoLoader.setDecoderPath('three/examples/js/libs/draco/gltf/')
 	loader = new GLTFLoader()
 	//loader.setDRACOLoader(dracoLoader)
-	loader.load("https://elasticbeanstalk-ap-south-1-889470011136.s3.ap-south-1.amazonaws.com/interior.glb", function (glb) {
+	loader.load(inte, function (glb) {
 		sceneMesh = glb.scene
 		const root = glb.scene
-		root.scale.set(0.065, 0.065, 0.065)
+
+		root.scale.set(0.07, 0.07, 0.07)
 		root.position.y = -2
 		scene.add(root)
 
