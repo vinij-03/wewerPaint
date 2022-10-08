@@ -417,6 +417,7 @@
 
 
 import * as THREE from 'three';
+import {AnimationMixer} from 'three';
 import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import { TubePainter } from './lib/Painter';
@@ -558,7 +559,6 @@ function init() {
 		this.userData.isSqueezing = false;
 
 	}
-
 	controls = new ImmersiveControls(camera, renderer, scene)
 	console.log(controls)
 	controller1 = renderer.xr.getController(0);
@@ -574,7 +574,7 @@ function init() {
 	controller2.addEventListener('squeezestart', onSqueezeStart);
 	controller2.addEventListener('squeezeend', onSqueezeEnd);
 	controller2.userData.painter = painter2;
-
+	console.log(controller1)
 	//
 
 	const geometry = new THREE.CylinderGeometry(0.01, 0.02, 0.08, 5);
@@ -590,6 +590,7 @@ function init() {
 
 	controller1.add(mesh.clone());
 	controller2.add(mesh.clone());
+
 
 	//
 
@@ -647,6 +648,9 @@ function animate() {
 }
 
 function render() {
+	//if (controls.vrControls.leftThumbstickMomentum['val']!=0) {
+	//console.log(controls.vrControls.leftThumbstickMomentum)}
+	//console.log(controls.vrControls.leftThumbstickMomentum['val'])
 	if (sceneMesh) {
 		
 	}
@@ -668,22 +672,35 @@ function render() {
 		for(let user in gameScene.users){
 			//console.log(gameScene.users[user].position)
 			if (gameScene.users[user].userId != socket.id){
-				if(user in meshes){
-					meshes[user].position.x = gameScene.users[user].position.x
-					meshes[user].position.y = gameScene.users[user].position.y - 1.6
-					meshes[user].position.z = gameScene.users[user].position.z
+				if(user in meshes && meshes[user]["loaded"] == true){
+					//console.log(meshes[user])
+					const mesh = meshes[user]["mesh"]
+					mesh.position.x = gameScene.users[user].position.x
+					mesh.position.y = gameScene.users[user].position.y - 1.6
+					mesh.position.z = gameScene.users[user].position.z
 					//[user].rotation.y = gameScene.users[user].rotation.y
-					meshes[user].setRotationFromEuler(new THREE.Euler(0, 0, 0))
-					meshes[user].applyQuaternion(gameScene.users[user].rotation)
+					mesh.setRotationFromEuler(new THREE.Euler(0, 0, 0))
+					mesh.applyQuaternion(gameScene.users[user].rotation)
+					
 					//meshes[user].position.set(gameScene.users[user].position.x, gameScene.users[user].position.y, gameScene.users[user].position.z)
 				}
 				else{
-					meshes[user] = new THREE.Mesh(new THREE.BoxGeometry(1, 1, 1), new THREE.MeshBasicMaterial({color: 0x00ff00}))
+					meshes[user] = {}
+					meshes[user]["mesh"] = new THREE.Mesh(new THREE.BoxGeometry(1, 1, 1), new THREE.MeshBasicMaterial({color: 0x00ff00}))
 					loader.load("https://elasticbeanstalk-ap-south-1-889470011136.s3.ap-south-1.amazonaws.com/Soldier.glb", function (glb) {
 						scene.add(glb.scene)
-						meshes[user] = glb.scene
-						gameScene.users[user].loaded = true
-						console.log("Loaded")
+						//console.log(glb)
+						meshes[user] = {}
+						meshes[user]["mesh"] = glb.scene
+						meshes[user]["loaded"] = true
+						console.log(glb.scene)
+						/*
+						const mixer = new THREE.AnimationMixer(glb.scene);
+						const clips = meshes[user].mesh.animations;
+						console.log(clips)
+						const clip = THREE.AnimationClip.findByName( clips, 'Run' );
+						const action = mixer.clipAction( clip );
+						action.play();*/
 					})
 				}
 			}
@@ -697,7 +714,7 @@ function render() {
 }
 
 function socketInit(roomId) {
-	socket = io("http://localhost:3001");
+	socket = io("http://ec2-43-205-117-26.ap-south-1.compute.amazonaws.com:3001");
 	socket.on("connect", () => {
 		console.log("Connected to server");
 		console.log("Socket ID: "+socket.id);
